@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<br>
+
+<!--   1.
+        請做出一個表格 Table ,資料結構如下:
+            班級,學號,姓名,分數
+            A,123,John,60
+            B,456,Bob,50
+            C,444,Mary,90
+            D,617,Jerry,0
+            E,543,Suzy,85
+        
+        將資料放置表格內並顯示於頁面中 -->
+  <table border="2" width="200">
+    <!-- 顯示在表單外，實際的標題 caption -->
+    <caption>成績單</caption>
+    <!-- 表頭 thead -->
+    <thead>
+        <!-- 表單的列tr -->
+        <tr>
+            <!-- 表單的列標題 th    scope col 表示為行 -->
+            <th scope="col">班級</th> 
+            <th scope="col">學號</th>
+            <th scope="col">姓名</th>
+            <th scope="col">分數</th>
+        </tr>
+    </thead>
+    <!-- 表體 tbody -->
+    <tbody class="list">
+        <tr>
+            <th scope="row">A</th>
+            <!-- 表單的表格元素td -->
+            <td>123</td>
+            <td>John</td>
+            <td>60</td>
+        </tr>
+        <tr>
+          <!-- scope row列 -->
+            <th scope="row">B</th>
+            <td>456</td>
+            <td>Bob</td>
+            <td>50</td>
+        </tr>
+        <tr>
+          <!-- scope row列 -->
+            <th scope="row">C</th>
+            <td>444</td>
+            <td>Mary</td>
+            <td>90</td>
+        </tr>
+        <tr>
+          <!-- scope row列 -->
+            <th scope="row">D</th>
+            <td>617</td>
+            <td>Jerry</td>
+            <td>0</td>
+        </tr>
+        <tr>
+          <!-- scope row列 -->
+            <th scope="row">E</th>
+            <td>543</td>
+            <td>Suzy</td>
+            <td>85</td>
+        </tr>
+    </tbody>
+</table>
+</br>
+</br>
+<!--   2.
+        請做出一個 Form 表單
+        可以輸入 班級,學號,姓名,分數
+        並用 POST 方法提交到 google.com -->
+<form  action="https://www.google.com.tw" method="post"> 
+  <div>
+    <label for="class">班級:</label>
+    <input name="class" id="class" value="A">
+  </div>
+  <div>
+    <label for="id">學號:</label>
+    <input name="id" id="id" value="0003">
+  </div>
+  <div>
+    <label for="name">姓名:</label>
+    <input name="name" id="name" value="0003">
+  </div>
+  <div>
+    <label for="score">分數:</label>
+    <input name="score" id="score" value="80">
+  </div>
+  <div>
+    <button class="submit">提交</button>
+  </div>
+</form>
+
+    
+    <!-- 
+        3.
+        能用 JS 將 Form 的提交內容的同時也新增至 Table 內嗎？
+        可以
+    -->
+
+    <script>
+
+let submit = document.querySelector('.submit')
+const  className = document.querySelector('#class')
+const  idName = document.querySelector('#id')
+const  stuName = document.querySelector('#name')
+const  score = document.querySelector('#score')
+const  list = document.querySelector('.list')
+submit.addEventListener('click',function(e){
+e.preventDefault()
+
+let newTr = ` <tr>
+            <th scope="row">${className.value}</th>
+            <td>${idName.value}</td>
+            <td>${stuName.value}</td>
+            <td>${score.value}</td>
+        </tr>`
+        list.insertAdjacentHTML("beforeend", newTr);
+})
+      
+    </script>
+
+</body>
+</html>
