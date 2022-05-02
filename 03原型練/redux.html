@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Redux</title>
+    <style>
+        #root {
+            font-size: 2em;
+            margin: 4em auto;
+            background-color: #e6ebef;
+            max-width: 960px;
+        }
+
+        #root>div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px rgb(238, 238, 238) solid;
+            min-height: 300px;
+            flex-direction: column;
+            padding: 2em 0;
+        }
+    </style>
+    <!-- 可以切換原生比較看看 -->
+    <!-- <script src="https://cdn.bootcss.com/redux/4.0.1/redux.min.js"></script> -->
+
+    <script>
+        (function (root, undefined) {
+
+            function createStore(reducer) {
+                var currentState = reducer()
+                var eventhub = []
+
+                function getState() { 
+                    return currentState
+                }
+                function dispatch(action) {
+                    currentState = reducer(currentState,action)
+                    eventhub.forEach(i=>i())
+                }
+                function subscribe(fn) {
+           
+              
+                    eventhub.push(fn)
+                    return function unSubscribe() {
+                        var index = eventhub.indexOf(fn)
+                
+                        listerners.splice(index, 1)
+                     
+                    }
+                }
+                return {
+                    getState,
+                    dispatch,
+                    subscribe
+                }
+
+            }
+
+            // 將引用保存在外部，一種簡單的對外開放方法的方式
+            root.Redux = { createStore }
+        })(window)
+    </script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        // render 邏輯
+        function render(store) {
+            var app = document.querySelector('#root')
+            app.innerHTML = `
+                <div>
+                    <div>你點了 <span id="value">${store.getState()}</span> 次</div>
+                    <div>
+                        <button id="add1" onclick="add1()">+1</button>
+                        <button id="add2" onclick="add2()">+2</button>
+                        <button id="add1IfOdd" onclick="addIf()">單數 +1</button>
+                        <button id="add1After2Sec" onclick="addAsync()">兩秒後 +1</button>
+                    </div>
+                </div>
+                `
+        }
+
+        // 1 寫好四個你自定義的 dispatch
+        {
+            var add1 = () => {
+                store.dispatch({
+                    type: 'add',
+                    payload: 1
+                })
+            }
+            var add2 = () => {
+                store.dispatch({
+                    type: 'add',
+                    payload: 2
+                })
+            }
+            var addIf = () => {
+                var oldState = store.getState()
+                if (oldState % 2 === 1) store.dispatch({
+                    type: 'add',
+                    payload: 1
+                })
+            }
+            var addAsync = () => {
+                setTimeout(() => store.dispatch({
+                    type: 'add',
+                    payload: 1
+                }), 2000)
+            }
+        }
+
+        var store
+        // 智障
+        const reducer = function (state = 0, action) {
+            return  action?.type === 'add'
+                    ? state + action.payload // 2 根據操作生成新的 state
+                    : state
+        }
+
+        store = Redux.createStore(reducer)
+        render(store)
+
+
+  
+
+        store.subscribe(() => {
+            render(store) // 3 接收到事件，重新 render
+        })
+
+        // console.log(c());
+    </script>
+</body>
+
+</html>
