@@ -1,0 +1,353 @@
+<html>
+
+<head>
+    <style>
+        p {
+            color: blue;
+        }
+
+        .xyz {
+            color: rgb(211, 127, 17);
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        // innerHTML polyfill
+
+        Object.defineProperty(Element.prototype, 'innerHTML2', {
+            get: function () {
+                var output = []
+                var childNode = this.firstChild
+                var serializer = new XMLSerializer()
+                while (childNode) {
+                    output.push(serializer.serializeToString(childNode))
+                    childNode = childNode.nextSibling
+                }
+                return output.join('')
+            },
+            set: function (text) {
+                while (this.firstChild) {
+                    this.removeChild(this.firstChild)
+                }
+                var parser = new DOMParser()
+                parser.async = false
+                var element
+                var childNode
+                try {
+                    element = parser.parseFromString(text, 'text/html').body
+                    childNode = element.firstChild
+                    while (childNode) {
+                        this.appendChild(this.ownerDocument.importNode(childNode, true))
+                        childNode = childNode.nextSibling
+                    }
+                } catch (e) {
+                    throw new Error('Error parsing XML string')
+                }
+            }
+        })
+
+
+        var htmlDiv = '<div class="xyz"><h1>Hello</h1></div><p style="color:red">xxx</p>'
+        document.body.innerHTML2 = htmlDiv
+        // document.body.innerHTML = htmlDiv
+
+        var xyz = document.querySelector('.xyz')
+
+        // 手動添加 style
+        { // 方法一
+            var rules = document.createElement('span').style
+            rules.backgroundColor = 'red'
+            rules.cursor = 'pointer'
+            rules.color = 'white'
+
+            // xyz.style = rules.cssText
+        }
+
+        { // 方法二
+            var applyStyles = (element, styles) => {
+                Object.entries(styles).forEach(([prop, val]) => {
+                    var [value, pri = ""] = val.split("!")
+                    element.style.setProperty(prop, value, pri)
+                })
+            }
+
+            var _styles = {
+                "font-size": "18px",
+                "background-color": "white",
+                color: "green"
+            }
+
+            // applyStyles(xyz, _styles)
+        }
+
+
+
+        { // 新增自定義 CSS 屬性 --my-property
+            Object.defineProperty(CSSStyleDeclaration.prototype, "myproperty", {
+                get: function () {
+                    return this.getPropertyValue('--my-property')
+
+                },
+                set: function (myproperty) {
+                    return this.setProperty("--my-property", myproperty)
+                },
+            })
+
+            document.body.style.myproperty = 'margin:50px'
+            // console.log(document.body.style)
+        }
+
+
+
+
+
+        { // Element 屬性
+
+            Element.prototype.appendTo = function (target) {
+                target.appendChild(this)
+                return this
+            }
+
+            Element.prototype.remove = function () {
+                var parent = this.parentNode;
+                if (!parent) {
+                    throw new Error('No parent node')
+                }
+                parent.removeChild(this)
+                return this
+            }
+
+            // play
+            document.body.remove()
+
+            document.documentElement.innerHTML += '<body></body>'
+            document.body.innerHTML2 = htmlDiv
+
+            var xyz = document.querySelector('.xyz')
+            var fragment = document.createDocumentFragment()
+            var h3 = document.createElement('h3')
+            h3.textContent = 'I am H3'
+            fragment.appendChild(h3)
+
+            h3.appendTo(xyz)
+
+
+            // 元素類的 document property
+            // document.documentElement 是 html 
+            // document.body 是 body
+            // document.head 是 head
+            // document.links  // HTMLCollection // 所有 a 標籤的集合
+            // document.embeds  // HTMLCollection  // 所有 embeds 標籤的集合
+            // document.forms  // HTMLCollection  // 所有 forms 標籤的集合
+            // form 如有 name 屬性可以 document.forms.xxx
+            // document.images  // HTMLCollection  // 所有 images 標籤的集合
+
+            // 重要的
+            // document.createElement()
+            // var dc = (e) => document.createElement(e)
+
+
+
+            // 有用的
+            // document.designMode = "on" || "off"
+            // document.documentURI === window.location.href
+
+            // 普通的
+            // document.addEventListener('DOMContentLoaded'()=>{})
+            // DOMContentLoaded 代表初始 HTML的元素完全加載和解析完畢(DOM tree 完成)，不需要等待 CSS，JS，圖片加載
+            // window.addEventListener('load', ()=>{})
+            // load 代表頁面中的 DOM，CSS，JS，圖片已經全部加載完畢
+
+
+            // 不重要但可以知道一下的
+            // document.defaultView 指向 global object
+            // document.childElementCount === Element.prototype.childElementCount   get
+            // document.lastModified    html 文檔的修改最後時間，對現在有 ajax 的網站來說沒用處了
+
+
+
+            // NodeList vs HTMLCollection ....? different?
+            document.body.children // HTMLCollection
+            document.body.childNodes // NodeList
+            document.body.childElementCount  === document.body.childNodes.length
+
+
+
+
+
+            Element.prototype.attr = function (key, value) {
+                if (value === undefined) {
+                    return this.getAttribute(key)
+                }
+                this.setAttribute(key, value)
+                return this
+            };
+            Element.prototype.data = function (key, value) {
+                return this.attr('data-' + key, value)
+            }
+
+
+
+            Element.prototype.show = function () {
+                if (this.style.display === 'none') {
+                    this.style.display = ''
+                }
+                return this
+            }
+            Element.prototype.hide = function () {
+                if (this.style.display !== 'none') {
+                    this.style.display = 'none'
+                }
+                return this
+            }
+            Element.prototype.hasClassName = function (className) {
+                return new RegExp('(^|\\s)' + className + '(\\s|$)').test(this.className);
+            }
+            Element.prototype.addClassName = function (className) {
+                if (!this.hasClassName(className)) {
+                    this.className += ' ' + className
+                    this.className = this.className.replace(/(^\s+|\s+$)/g, '')
+                }
+                return this
+            }
+            Element.prototype.removeClassName = function (className) {
+                var e = this.className.split(/\s+/),
+                    index = e.indexOf(className)
+                if (index > -1) {
+                    delete e[index]
+                    this.className = e.join(' ')
+                }
+                return this
+            }
+        }
+        {
+            Element.prototype.insert = function () {
+                var input = arguments[0];
+                switch (typeof input) {
+                    case 'undefined':
+                        throw new Error('Missing input');
+                    case 'string':
+                    case 'number':
+                        this.appendChild(document.createTextNode(input));
+                        break;
+                    case 'object':
+                        if (input instanceof Element || input instanceof DocumentFragment) {
+                            this.appendChild(input)
+                        } else {
+                            Object.getOwnPropertyNames(input).forEach(function (pos) {
+                                var els = input[pos],
+                                    parent;
+                                els = (els instanceof Array) ? els : [els];
+                                switch (pos) {
+                                    case 'top':
+                                        els.forEach(function (el) {
+                                            this.firstChild ? this.insertBefore(el, this
+                                                .firstChild) : this.appendChild(el);
+                                        }, this);
+                                        break;
+                                    case 'bottom':
+                                        els.forEach(function (el) {
+                                            this.appendChild(el);
+                                        }, this);
+                                        break;
+                                    case 'before':
+                                        parent = this.parentNode;
+                                        if (!parent) {
+                                            throw new Error('No parent node');
+                                        }
+                                        els.forEach(function (el) {
+                                            parent.insertBefore(el, this);
+                                        }, this);
+                                        break;
+                                    case 'after':
+                                        parent = this.parentNode;
+                                        if (!parent) {
+                                            throw new Error('No parent node');
+                                        }
+                                        if (parent.lastChild === this) {
+                                            els.forEach(function (el) {
+                                                parent.appendChild(el);
+                                            });
+                                        } else {
+                                            var next = this.nextSibling;
+                                            els.forEach(function (el) {
+                                                parent.insertBefore(el, next);
+                                            });
+                                        }
+                                        break;
+                                }
+                            }, this);
+                        }
+                        break;
+                }
+                return this;
+            };
+        }
+
+
+        { // querySelectorAll return NodeList
+ 
+
+            NodeList.prototype.forEach = function () {
+                return Array.prototype.forEach.apply(this, arguments)
+            }
+            NodeList.prototype.some = function () {
+                return Array.prototype.some.apply(this, arguments)
+            }
+            NodeList.prototype.every = function () {
+                return Array.prototype.every.apply(this, arguments)
+            }
+            NodeList.prototype.map = function () {
+                return Array.prototype.map.apply(this, arguments)
+            }
+            NodeList.prototype.reduce = function () {
+                return Array.prototype.reduce.apply(this, arguments)
+            }
+            NodeList.prototype.filter = function () {
+                return Array.prototype.filter.apply(this, arguments)
+            }
+        }
+
+
+
+
+
+    </script>
+<!-- 
+
+
+    富文本編輯相關技能樹
+
+    document.activeElement
+    https://developer.mozilla.org/zh-CN/docs/Web/API/Document/activeElement
+
+    range 手術刀般的控制 node
+
+
+
+-->
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

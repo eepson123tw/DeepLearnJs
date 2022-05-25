@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+        var React = {
+            createElement(tag, peops, ...children) {
+                return {
+                    tag,
+                    peops,
+                    children
+                }
+            },
+            createRoot(root) {
+                return {
+                    render(el, container = root) {
+
+                        var div = document.createElement(el.tag)
+
+                        for (let attr in el.peops) {
+                            div.setAttribute(attr, el.peops[attr])
+                        }
+
+                        for (let child of el.children ) {
+                            div.appendChild(
+                                typeof child === "string" 
+                                ? document.createTextNode(child) 
+                                : this.render(child, div) 
+                            )
+                        }
+
+                        return container.appendChild(div)
+                    }
+                }
+            }
+        }
+        
+        
+        var vm = (
+            <div>
+                <h1 class="xyz">Hello, React</h1>
+                <p>你好</p>
+            </div>
+        )
+        var root = React.createRoot(document.getElementById('root'))
+
+
+        root.render(vm , document.getElementById('root') )
+ 
+    </script>
+
+
+
+
+</body>
+
+</html>

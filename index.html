@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDN React Boilerplate</title>
+    <link rel="icon" href="data:;base64,iVBORwOKGO=" />
+    <style>
+        body{
+  background-color: #252536;
+}
+#root{
+  font-size: 2em;
+  margin: 4em auto;
+  background-color: #e6ebef;
+  max-width: 960px;
+}
+#root > div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px rgb(238, 238, 238) solid;
+  min-height: 300px;
+  flex-direction: column;
+  padding: 2em 0;
+}
+
+    </style>
+    <!-- https://reactjs.org/docs/cdn-links.html -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+function App() {
+  const [list, setList] = React.useState([])
+  window.list = list
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const responses = await fetch("https://jsonplaceholder.typicode.com/users")
+        const data = await responses.json()
+        setList([...data])
+      } catch (e) {
+        console.log(e.name)
+        console.log(e.message)
+      }
+    }
+    fetchData()
+  }, [])
+
+  return (
+    <div>
+      {list && list.map((item) => {
+        return (
+          <p key={item.id}>
+            {item.name}
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
+
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<App />)
+
+    </script>
+</body>
+</html>

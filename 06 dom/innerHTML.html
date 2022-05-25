@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <h3 class="xyz"></h3>
+
+    <script>
+        // innerHTML polyfill
+        
+        Object.defineProperty(Element.prototype, 'innerHTML2', {
+            get: function () {
+                var output = []
+                var childNode = this.firstChild
+                var serializer = new XMLSerializer()
+             
+                while (childNode) {
+                    output.push(serializer.serializeToString(childNode))
+                    childNode = childNode.nextSibling
+                }
+          
+                return output.join('')
+            },
+            set: function (text) {
+                console.log(this); // body
+                while (this.firstChild) {
+                    this.removeChild(this.firstChild)
+                }
+                var parser = new DOMParser()
+                parser.async = false
+                var xml = '<root>' + text + '</root>'
+                var element
+                var childNode
+                try {
+                    element = parser.parseFromString(xml, 'text/xml').documentElement // root
+                    childNode = element.firstChild
+                    while (childNode) {
+                        this.appendChild(this.ownerDocument.importNode(childNode, true))
+                        childNode = childNode.nextSibling
+                    }
+                } catch (e) {
+                    throw new Error('Error parsing XML string')
+                };
+            }
+        })
+        
+        let xyz = document.querySelector('.xyz')
+        xyz.innerHTML2="123"
+        // document.body.innerHTML2 = "<h1> Hello 55555555 </h1><p>xxx</p>"
+        // document.xyz.innerHTML2 = "<h1> Hello 55555555 </h1><p>xxx</p>"
+        // console.log(document.querySelector('h1'),Element.prototype)
+    </script>
+</body>
+
+</html>
