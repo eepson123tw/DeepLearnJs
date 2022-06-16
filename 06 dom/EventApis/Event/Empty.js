@@ -1,5 +1,5 @@
-/*DragEvent
+/*
 
 */
 
-console.dir(DragEvent.prototype);
+// console.dir(DragEvent.prototype);
