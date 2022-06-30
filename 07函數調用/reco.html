@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <!-- 模擬資料來源 -->
+    <script src="group.js"></script> 
+    <script type="text/babel">
+
+        // coState
+        const costate = state => ({
+            get : ()=> state.val ? state.val : state.defaul,
+            set : (val) => state.val = val, 
+        })
+        // useCoState
+        const useCoState = (costate) =>{   
+            const set = (newState) => {
+                costate.set(newState)
+                root.render(<App />)
+            }
+            return [costate.get(), set]
+        }
+
+        // coState 初始值 => bike 
+        const bike = costate({
+            defaul: bikeArry(bikesDefinitions1, bikesDefinitions2, bikesDefinitions3)
+        })
+
+        // coState 初始值 => number 
+        const number = costate({
+            defaul: 0
+        })
+
+    
+
+        // React structure
+        const root = ReactDOM.createRoot(document.querySelector('#root'))
+        const render = () => root.render(<App />)
+
+        const Elem = () =>{
+    
+            let [n, setN] = useCoState(number)
+
+            return <div>
+                <p>number work: {n}</p>
+
+                <button onClick={()=> { setN(n-1) }}> 減 </button>
+                <button onClick={()=> { setN(n+1) }}> 加 </button>
+                
+            </div>
+        }
+        const App = () => {
+            
+            let [data, setData] = useCoState(bike)
+            
+            const button = <button onClick={()=> { setData(data.reverse()) }}> sort </button>
+            
+            return <div> <p>Bike List</p> { button }
+            { 
+                data && (data).map(item => {
+                    return (
+                        <p key={item.bikeId}> 
+                            <span>ID: <b>{item.bikeId} </b> </span>
+                            <span>電池: <b>{item.batteryPartNumber} </b> </span>
+                            <span>更新時間: <time>{ new Date(item.latestUpdateTimestamp).toLocaleString() } </time> </span>
+                        </p>
+                    )
+                })
+            }
+
+            <Elem/>
+            </div>}
+
+        // render
+        root.render(<App />)
+
+    </script>
+</body>
+
+</html>
