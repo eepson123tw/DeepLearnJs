@@ -46,7 +46,6 @@ const diff = (set1, set2) => {
 
 const unionSet = union(s1, s2)
 log('並集', unionSet)
-
 const interSet = inter(s1, s2)
 log('交集', interSet)
 const diffSet = diff(s1, s2)
