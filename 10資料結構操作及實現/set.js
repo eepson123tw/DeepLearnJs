@@ -21,13 +21,33 @@ s2.delete(6)
 // log(s2.values())
 
 /* 實現集合方法  */
-//並集
+//
 const union = (set1, set2) => {
   let res = [...set1, ...set2]
   return new Set(res)
 }
-const inter = (set1, set2) => {} //交集
-const diff = (set1, set2) => {} //差集
+//交集
+const inter = (set1, set2) => {
+  let newSet = new Set()
+  for (const item of set1) {
+    if (set2.has(item)) {
+      newSet.add(item)
+    }
+  }
+  return newSet
+}
+//差集
+const diff = (set1, set2) => {
+  for (const elem of set2) {
+    set1.delete(elem)
+  }
+  return set1
+}
 
 const unionSet = union(s1, s2)
-log(unionSet)
+log('並集', unionSet)
+
+const interSet = inter(s1, s2)
+log('交集', interSet)
+const diffSet = diff(s1, s2)
+log('差集', diffSet)
