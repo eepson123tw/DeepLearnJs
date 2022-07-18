@@ -278,7 +278,7 @@ console.log(array1.findIndex(isLargeNumber)); //3
 ---
 
 traversal
-*Array.prototype.find()
+*Array.prototype.find() Done
 find() 方法返回数组中满足提供的测试函数的第一个元素的值。否则返回 undefined。
 arr.find(callback[, thisArg])
 
@@ -364,9 +364,21 @@ const coDataAry = (ary) => {
         }
       }
       return index
+    },
+    fill: (value) => {
+      if (!value) return console.error('no value')
+      for (let i = 0; i < ary.length; i++) {
+        ary[i] = value
+      }
+      return coDataAry(ary)
+    },
+    log: () => {
+      console.log(ary)
     }
   }
 }
 
 let ary = coDataAry([1, 2, 3, 4, 5])
-console.log(ary.find((x) => x >= 2))
+// console.log(ary.find((x) => x >= 2))
+ary.fill(2)
+ary.log()
