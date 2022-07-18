@@ -107,7 +107,7 @@ arr.reduce(callback[accumulator, currentValue, currentIndex, array], initialValu
 ---
 
 mutable
-*Array.prototype.push()
+*Array.prototype.push() Done
 push() 方法會添加一個或多個元素至陣列的末端，並且回傳陣列的新長度。
 
 ---
@@ -374,11 +374,18 @@ const coDataAry = (ary) => {
     },
     log: () => {
       console.log(ary)
+    },
+    push(val) {
+      ary.length = ary.length + 1
+      ary[ary.length - 1] = val
+      return coDataAry(ary)
     }
   }
 }
 
 let ary = coDataAry([1, 2, 3, 4, 5])
+// ary.push({ 123: 123 })
+// ary.log()
 // console.log(ary.find((x) => x >= 2))
-ary.fill(2)
-ary.log()
+// ary.fill(2)
+// ary.log()
