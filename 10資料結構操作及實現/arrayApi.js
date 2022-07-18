@@ -81,7 +81,7 @@ slice() 方法返回一个新的数组对象，这一对象是一个由 begin �
 ---
 
 mutable
-*Array.prototype.shift()
+*Array.prototype.shift() Done
 shift() 方法从数组中删除第一个元素，并返回该元素的值。此方法更改数组的长度。
 
 ---
@@ -379,11 +379,25 @@ const coDataAry = (ary) => {
       ary.length = ary.length + 1
       ary[ary.length - 1] = val
       return coDataAry(ary)
+    },
+    pop() {
+      ary.length = ary.length - 1
+      return coDataAry(ary)
+    },
+    shift(val) {
+      let result = []
+      for (let i = 0; i <= ary.length; i++) {
+        result[0] = val
+        ary[i] && (result[i + 1] = ary[i])
+      }
+      return coDataAry(result)
     }
   }
 }
 
 let ary = coDataAry([1, 2, 3, 4, 5])
+ary.shift(8)
+// ary.pop().log()
 // ary.push({ 123: 123 })
 // ary.log()
 // console.log(ary.find((x) => x >= 2))
