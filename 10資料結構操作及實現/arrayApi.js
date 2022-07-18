@@ -375,20 +375,27 @@ const coDataAry = (ary) => {
     log: () => {
       console.log(ary)
     },
-    push(val) {
+    push: (val) => {
       ary.length = ary.length + 1
       ary[ary.length - 1] = val
       return coDataAry(ary)
     },
-    pop() {
+    pop: () => {
       ary.length = ary.length - 1
       return coDataAry(ary)
     },
-    shift(val) {
+    unShift: (val) => {
       let result = []
       for (let i = 0; i <= ary.length; i++) {
         result[0] = val
         ary[i] && (result[i + 1] = ary[i])
+      }
+      return coDataAry(result)
+    },
+    shift: () => {
+      let result = []
+      for (let i = 0; i <= ary.length; i++) {
+        ary[i + 1] && result.push(ary[i + 1])
       }
       return coDataAry(result)
     }
@@ -396,7 +403,7 @@ const coDataAry = (ary) => {
 }
 
 let ary = coDataAry([1, 2, 3, 4, 5])
-ary.shift(8)
+// ary.shift().log()
 // ary.pop().log()
 // ary.push({ 123: 123 })
 // ary.log()
