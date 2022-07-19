@@ -119,7 +119,7 @@ pop() 方法會移除並回傳陣列的最後一個元素。此方法會改變�
 ---
 
 mutable
-*Array.of()
+*Array.of() Done
 Array.of() 方法會由引數（arguments）的數量來建立一個新的 Array 實體，而不管引數的數量或類型為何。
 Array.of(1);         // [1]
 Array.of(1, 2, 3);   // [1, 2, 3]
@@ -398,11 +398,19 @@ const coDataAry = (ary) => {
         ary[i + 1] && result.push(ary[i + 1])
       }
       return coDataAry(result)
+    },
+    // pop() {
+    //   console.log(array)
+    // },
+    of: (...val) => {
+      if (!val.length) throw new Error()
+      return coDataAry(val)
     }
   }
 }
 
 let ary = coDataAry([1, 2, 3, 4, 5])
+// ary.of().log()
 // ary.shift().log()
 // ary.pop().log()
 // ary.push({ 123: 123 })
