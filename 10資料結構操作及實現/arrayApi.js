@@ -268,7 +268,7 @@ console.log(found); //130
 ---
 
 traversal
-*Array.prototype.findIndex()
+*Array.prototype.findIndex() Done
 findIndex()方法返回数组中满足提供的测试函数的第一个元素的索引。若没有找到对应元素则返回-1。
 const array1 = [5, 12, 8, 130, 44];
 const isLargeNumber = (element) => element > 13;
@@ -357,9 +357,19 @@ const coDataAry = (ary) => {
   return {
     find: (fn) => {
       let index = undefined
-      for (let item of ary) {
+      for (let item in ary) {
         if (fn(item)) {
           index = item
+          break
+        }
+      }
+      return index
+    },
+    findIndex: (fn) => {
+      let index = undefined
+      for (let i = 0; i < ary.length; i++) {
+        if (fn(ary[i])) {
+          index = i
           break
         }
       }
@@ -415,7 +425,8 @@ const coDataAry = (ary) => {
 
 let ary = coDataAry([1, 2, 3, 4, 5])
 
-ary.filter((x) => x >= 3).log()
+// console.log(ary.findIndex((x) => x >= 2))
+// ary.filter((x) => x >= 3).log()
 // ary.of().log()
 // ary.shift().log()
 // ary.pop().log()
