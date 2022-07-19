@@ -113,7 +113,7 @@ push() 方法會添加一個或多個元素至陣列的末端，並且回傳陣�
 ---
 
 mutable
-*Array.prototype.pop()
+*Array.prototype.pop() Done
 pop() 方法會移除並回傳陣列的最後一個元素。此方法會改變陣列的長度。
 
 ---
@@ -290,7 +290,7 @@ console.log(found);
 ---
 
 traversal
-*Array.prototype.filter()
+*Array.prototype.filter() Done
 filter() 方法创建一个新数组，其包含通过所提供函数实现的测试的所有元素。 
 var newArray = arr.filter(callback(element[, index[, array]])[, thisArg])
 
@@ -399,17 +399,23 @@ const coDataAry = (ary) => {
       }
       return coDataAry(result)
     },
-    // pop() {
-    //   console.log(array)
-    // },
     of: (...val) => {
       if (!val.length) throw new Error()
       return coDataAry(val)
+    },
+    filter: (fn) => {
+      let res = []
+      for (let i = 0; i < ary.length; i++) {
+        fn(ary[i]) && res.push(ary[i])
+      }
+      return coDataAry(res)
     }
   }
 }
 
 let ary = coDataAry([1, 2, 3, 4, 5])
+
+ary.filter((x) => x >= 3).log()
 // ary.of().log()
 // ary.shift().log()
 // ary.pop().log()
