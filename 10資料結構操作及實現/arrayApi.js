@@ -305,7 +305,7 @@ arr.fill(value[, start[, end]])
 ---
 
 traversal
-*Array.prototype.every()
+*Array.prototype.every() Done
 方法测试一个数组内的所有元素是否都能通过某个指定函数的测试。它返回一个布尔值。
 const isBelowThreshold = (currentValue) => currentValue < 40;
 const array1 = [1, 30, 39, 29, 10, 13];
@@ -419,12 +419,23 @@ const coDataAry = (ary) => {
         fn(ary[i]) && res.push(ary[i])
       }
       return coDataAry(res)
+    },
+    every: (fn) => {
+      let isEveryPass = false
+      for (let item of ary) {
+        if (fn(item)) {
+          isEveryPass = true
+        } else {
+          isEveryPass = false
+        }
+      }
+      return isEveryPass
     }
   }
 }
 
 let ary = coDataAry([1, 2, 3, 4, 5])
-
+// console.log(ary.every((x) => x >= 1))
 // console.log(ary.findIndex((x) => x >= 2))
 // ary.filter((x) => x >= 3).log()
 // ary.of().log()
