@@ -244,7 +244,7 @@ console.log(flattened);
 ---
 
 mutable
-*Array.prototype.flat()
+*Array.prototype.flat() Done
 flat() 方法会按照一个可指定的深度递归遍历数组，并将所有元素与遍历到的子数组中的元素合并为一个新数组返回。
 const arr1 = [0, 1, 2, [3, 4]];
 console.log(arr1.flat());
@@ -352,6 +352,16 @@ const array1 = [5, 12, 8, 130, 44];
 let index = 2;
 array1.at(index) //8
 */
+let resItem = []
+const recursiveDeep = (ary) => {
+  for (let item of ary) {
+    if (typeof item === 'object' && Array.isArray(item)) {
+      recursiveDeep(item)
+    } else {
+      resItem.push(item)
+    }
+  }
+}
 
 const coDataAry = (ary) => {
   return {
@@ -430,11 +440,16 @@ const coDataAry = (ary) => {
         }
       }
       return isEveryPass
+    },
+    flat: () => {
+      recursiveDeep(ary)
+      return coDataAry(resItem)
     }
   }
 }
 
-let ary = coDataAry([1, 2, 3, 4, 5])
+let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
+ary.flat().log()
 // console.log(ary.every((x) => x >= 1))
 // console.log(ary.findIndex((x) => x >= 2))
 // ary.filter((x) => x >= 3).log()
