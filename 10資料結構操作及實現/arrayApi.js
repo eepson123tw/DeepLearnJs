@@ -223,7 +223,7 @@ expected output: Array ["f", "o", "o"]
 ---
 
 traversal
-*Array.prototype.forEach()
+*Array.prototype.forEach() Done
 forEach() 方法对数组的每个元素执行一次给定的函数。
 array1.forEach(element => console.log(element));
 
@@ -449,15 +449,31 @@ const coDataAry = (ary) => {
       for (let i = 0; i < ary.length; i++) {
         fn(ary[i])
       }
+    },
+    reverse: () => {
+      // let end = ary.length - 1
+      // let start = 0
+      // while (start < end) {
+      //   // let s = ary[start]
+      //   // let e = ary[end]
+      //   // ary[start] = e
+      //   // ary[end] = s
+
+      //   start++
+      //   end--
+      // }
+
+      for (let i = 0; i < ary.length; i++) {
+        ;[ary[i], ary[i++]] = [ary[ary.length - 1], ary[ary.length - 1 - i]]
+      }
+
+      return coDataAry(ary)
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
-let a = ary.flat()
-a.forEach((x) => {
-  console.log(x)
-})
+let a = ary.flat().reverse().log()
 
 // console.log(ary.every((x) => x >= 1))
 // console.log(ary.findIndex((x) => x >= 2))
