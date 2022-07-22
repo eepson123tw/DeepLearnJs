@@ -444,12 +444,21 @@ const coDataAry = (ary) => {
     flat: () => {
       recursiveDeep(ary)
       return coDataAry(resItem)
+    },
+    forEach: (fn) => {
+      for (let i = 0; i < ary.length; i++) {
+        fn(ary[i])
+      }
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
-ary.flat().log()
+let a = ary.flat()
+a.forEach((x) => {
+  console.log(x)
+})
+
 // console.log(ary.every((x) => x >= 1))
 // console.log(ary.findIndex((x) => x >= 2))
 // ary.filter((x) => x >= 3).log()
