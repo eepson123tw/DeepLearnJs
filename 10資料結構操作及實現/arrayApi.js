@@ -468,13 +468,16 @@ const coDataAry = (ary) => {
       }
 
       return coDataAry(ary)
+    },
+    isArray: () => {
+      return ary instanceof Array
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
-let a = ary.flat().reverse().log()
-
+let a = ary.flat()
+// console.log(ary.isArray())
 // console.log(ary.every((x) => x >= 1))
 // console.log(ary.findIndex((x) => x >= 2))
 // ary.filter((x) => x >= 3).log()
