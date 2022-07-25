@@ -129,7 +129,7 @@ Array.of(undefined); // [undefined]
 ---
 
 immutable
-*Array.prototype.map()
+*Array.prototype.map() Done
 map() 方法會建立一個新的陣列，其內容為原陣列的每一個元素經由回呼函式運算後所回傳的結果之集合。
 
 ---
@@ -485,12 +485,22 @@ const coDataAry = (ary) => {
         }
         return res
       }
+    },
+    map: (fn) => {
+      let res = []
+      for (let i = 0; i < ary.length; i++) {
+        res[i] = fn(ary[i])
+      }
+      return coDataAry(res)
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
 let a = ary.flat()
+a.map((x) => ({
+  app: x + 1
+})).log()
 // console.log(a.join(' '))
 // console.log(ary.isArray())
 // console.log(ary.every((x) => x >= 1))
