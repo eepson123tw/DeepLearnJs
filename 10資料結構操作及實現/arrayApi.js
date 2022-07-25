@@ -148,7 +148,7 @@ keys() 方法會回傳一個包含陣列中的每一個索引之鍵（keys）的
 ---
 
 mutable
-Array.prototype.join()
+*Array.prototype.join()
 join() 方法會將陣列（或一個類陣列（array-like）物件）中所有的元素連接、合併成一個字串，並回傳此字串。
 console.log(elements.join());
 expected output: "Fire,Air,Water"
@@ -156,7 +156,7 @@ expected output: "Fire,Air,Water"
 ---
 
 traversal
-*Array.isArray()
+*Array.isArray() Done
 Array.isArray() 函式會檢查傳入的值是否為一個 Array。
 Array.isArray([1, 2, 3]);  // true
 ---
@@ -471,12 +471,27 @@ const coDataAry = (ary) => {
     },
     isArray: () => {
       return ary instanceof Array
+    },
+    join: (val) => {
+      let res = ''
+      if (val) {
+        for (let i = 0; i < ary.length; i++) {
+          res += ary[i].toString() + `${val}`
+        }
+        return res
+      } else {
+        for (let i = 0; i < ary.length; i++) {
+          res += ary[i]
+        }
+        return res
+      }
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
 let a = ary.flat()
+// console.log(a.join(' '))
 // console.log(ary.isArray())
 // console.log(ary.every((x) => x >= 1))
 // console.log(ary.findIndex((x) => x >= 2))
