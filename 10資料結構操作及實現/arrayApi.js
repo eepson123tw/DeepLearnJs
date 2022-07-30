@@ -492,15 +492,25 @@ const coDataAry = (ary) => {
         res[i] = fn(ary[i])
       }
       return coDataAry(res)
+    },
+    indexOf: (val) => {
+      for (let i = 0; i < ary.length; i++) {
+        if (val === ary[i]) {
+          return i
+        } else {
+          return -1
+        }
+      }
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
 let a = ary.flat()
-a.map((x) => ({
-  app: x + 1
-})).log()
+// console.log(a.indexOf(1))
+// a.map((x) => ({
+//   app: x + 1
+// })).log()
 // console.log(a.join(' '))
 // console.log(ary.isArray())
 // console.log(ary.every((x) => x >= 1))
