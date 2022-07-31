@@ -100,7 +100,7 @@ reduceRight() 方法接受一个函数作为累加器（accumulator）和数组�
 ---
 
 traversal
-*Array.prototype.reduce() 很刺激
+*Array.prototype.reduce()  Done
 reduce() 方法將一個累加器及陣列中每項元素（由左至右）傳入回呼函式，將陣列化為單一值。
 arr.reduce(callback[accumulator, currentValue, currentIndex, array], initialValue)
 
@@ -505,12 +505,30 @@ const coDataAry = (ary) => {
     concat: (...val) => {
       let newAry = [...ary, ...val]
       return coDataAry(newAry)
+    },
+    reduce: (fn, initVal) => {
+      let newAry = [...ary]
+      let i = 0
+      let res
+      while (i < newAry.length) {
+        res = fn.call(
+          undefined,
+          res === undefined ? initVal : res,
+          newAry[i],
+          i,
+          newAry
+        )
+        i++
+      }
+
+      return res
     }
   }
 }
 
-let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
-let a = ary.flat()
+// let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
+// let a = ary.flat()
+
 // a.concat(1, 2, 3).log()
 // console.log(a.indexOf(1))
 // a.map((x) => ({
