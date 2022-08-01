@@ -520,14 +520,35 @@ const coDataAry = (ary) => {
         )
         i++
       }
-
       return res
+    },
+    at(index) {
+      let isNegative =
+        Math.sign(index) === -1
+          ? true
+          : Math.sign(index) === 1
+          ? false
+          : Math.sign(index)
+      let res
+      if (typeof isNegative === 'boolean') {
+        ary = isNegative ? ary.reverse() : ary
+        let absIndex = Math.abs(index)
+
+        for (let i = 0; i < ary.length; i++) {
+          i === absIndex && (res = ary[absIndex])
+        }
+        return res
+      } else if (isNegative === 0 || isNegative === -0) {
+        return ary[isNegative]
+      } else {
+        return console.error('type is bizarre')
+      }
     }
   }
 }
 
-// let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
-// let a = ary.flat()
+let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
+let a = ary.flat()
 
 // a.concat(1, 2, 3).log()
 // console.log(a.indexOf(1))
