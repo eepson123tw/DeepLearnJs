@@ -148,7 +148,7 @@ keys() 方法會回傳一個包含陣列中的每一個索引之鍵（keys）的
 ---
 
 mutable
-*Array.prototype.join()
+*Array.prototype.join() Done
 join() 方法會將陣列（或一個類陣列（array-like）物件）中所有的元素連接、合併成一個字串，並回傳此字串。
 console.log(elements.join());
 expected output: "Fire,Air,Water"
@@ -162,7 +162,7 @@ Array.isArray([1, 2, 3]);  // true
 ---
 
 traversal
-*Array.prototype.indexOf()
+*Array.prototype.indexOf() Done
 indexOf() 方法會回傳給定元素於陣列中第一個被找到之索引，若不存在於陣列中則回傳 -1。
 const beasts = ['ant', 'bison', 'camel', 'duck', 'bison'];
 console.log(beasts.indexOf('bison'));
@@ -172,7 +172,7 @@ expected output: 1
 ---
 
 traversal
-*Array.prototype.includes()
+*Array.prototype.includes() Done
 includes() 方法會判斷陣列是否包含特定的元素，並以此來回傳 true 或 false。
 const array1 = [1, 2, 3];
 console.log(array1.includes(2));
@@ -344,7 +344,7 @@ concat() 方法用于合并两个或多个数组。此方法不会更改现有�
 ---
 
 immutable
-*Array.prototype.at()
+*Array.prototype.at() Done
 方法接收一个整数值并返回该索引的项目，允许正数和负数。负整数从数组中的最后一个项目开始倒数。
 return =>匹配给定索引的数组中的元素。如果找不到指定的索引，则返回undefined。
 
@@ -352,15 +352,17 @@ const array1 = [5, 12, 8, 130, 44];
 let index = 2;
 array1.at(index) //8
 */
-let resItem = []
-const recursiveDeep = (ary) => {
+
+const recursiveDeep = (ary, state) => {
+  state = state ? state : []
   for (let item of ary) {
     if (typeof item === 'object' && Array.isArray(item)) {
-      recursiveDeep(item)
+      recursiveDeep(item, state)
     } else {
-      resItem.push(item)
+      state.push(item)
     }
   }
+  return state
 }
 
 const coDataAry = (ary) => {
@@ -442,7 +444,7 @@ const coDataAry = (ary) => {
       return isEveryPass
     },
     flat: () => {
-      recursiveDeep(ary)
+      let resItem = recursiveDeep(ary)
       return coDataAry(resItem)
     },
     forEach: (fn) => {
@@ -543,6 +545,19 @@ const coDataAry = (ary) => {
       } else {
         return console.error('type is bizarre')
       }
+    },
+    includes(val, fromIndex = 0) {
+      if (Math.abs(fromIndex) > ary.length) return false
+      if (Math.sign(fromIndex) === -1) {
+        ary.reverse()
+      }
+      let res = false
+      for (fromIndex; fromIndex < ary.length; fromIndex++) {
+        if (ary[fromIndex] === val) {
+          return (res = true)
+        }
+      }
+      return res
     }
   }
 }
