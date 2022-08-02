@@ -63,7 +63,7 @@ arr.sort([compareFunction])
 ---
 
 traversal
-*Array.prototype.some()
+*Array.prototype.some() Done
 some() 方法测试数组中是不是至少有 1 个元素通过了被提供的函数测试。它返回的是一个 Boolean 类型的值。
 const array = [1, 2, 3, 4, 5];
 const even = (element) => element % 2 === 0;
@@ -565,12 +565,20 @@ const coDataAry = (ary) => {
         res = fn(item)
       }
       return res
+    },
+    from(obj) {
+      if (obj && typeof obj[Symbol.iterator] === 'function') {
+        return [...obj]
+      } else {
+        console.error('can not be iterate')
+      }
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
 let a = ary.flat()
+// console.log(a.from(...new Map([[1, '123']])))
 // console.log(a.some((x) => x > 2))
 // a.concat(1, 2, 3).log()
 // console.log(a.indexOf(1))
