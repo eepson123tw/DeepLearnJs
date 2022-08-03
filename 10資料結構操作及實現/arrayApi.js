@@ -25,13 +25,13 @@ values() 方法返回一个新的 Array Iterator 对象，该对象包含数组�
 ---
 
 mutable
-*Array.prototype.unshift()
+*Array.prototype.unshift() Done
 unshift() 方法将一个或多个元素添加到数组的开头，并返回该数组的新长度（该方法修改原有数组）。
 
 ---
 
 immutable
-*Array.prototype.toString()
+*Array.prototype.toString() Done
 toString() 返回一个字符串，表示指定的数组及其元素。
 
 
@@ -215,7 +215,7 @@ const inventory = [
 ---
 
 immutable
-*Array.from()
+*Array.from() Done
 Array.from() 方法对一个类似数组或可迭代对象创建一个新的，浅拷贝的数组实例。
 console.log(Array.from('foo'));
 expected output: Array ["f", "o", "o"]
@@ -406,7 +406,7 @@ const coDataAry = (ary) => {
       ary.length = ary.length - 1
       return coDataAry(ary)
     },
-    unShift: (val) => {
+    unshift: (val) => {
       let result = []
       for (let i = 0; i <= ary.length; i++) {
         result[0] = val
@@ -580,13 +580,24 @@ const coDataAry = (ary) => {
         res += ary[i].toString() + dot
       }
       return res
+    },
+    values(i = 0) {
+      i === undefined ? 0 : i
+      console.log(i)
+      return {
+        next: () => {
+          // console.log({ value: ary[i], done: false })
+          return coDataAry(ary).values(++i)
+        }
+      }
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
 let a = ary.flat()
-a.toString()
+a.values().next().next().next().next()
+// a.toString()
 // console.log(a.from(...new Map([[1, '123']])))
 // console.log(a.some((x) => x > 2))
 // a.concat(1, 2, 3).log()
