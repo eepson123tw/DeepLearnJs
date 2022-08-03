@@ -572,12 +572,21 @@ const coDataAry = (ary) => {
       } else {
         console.error('can not be iterate')
       }
+    },
+    toString() {
+      let res = ''
+      for (let i = 0; i < ary.length; i++) {
+        let dot = i === ary.length - 1 ? '' : ','
+        res += ary[i].toString() + dot
+      }
+      return res
     }
   }
 }
 
-let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]]])
+let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
 let a = ary.flat()
+a.toString()
 // console.log(a.from(...new Map([[1, '123']])))
 // console.log(a.some((x) => x > 2))
 // a.concat(1, 2, 3).log()
