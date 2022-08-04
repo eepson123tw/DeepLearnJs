@@ -590,13 +590,20 @@ const coDataAry = (ary) => {
           return coDataAry(ary).values(++i)
         }
       }
+    },
+    findLast(fn) {
+      let newAry = ary.reverse()
+      return newAry.findIndex((x) => fn(x))
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
 let a = ary.flat()
-a.values().next().next().next().next()
+
+console.log(a.findLast((x) => x === 3))
+
+// a.values().next().next().next().next()
 // a.toString()
 // console.log(a.from(...new Map([[1, '123']])))
 // console.log(a.some((x) => x > 2))
