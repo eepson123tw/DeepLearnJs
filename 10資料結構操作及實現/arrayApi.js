@@ -594,6 +594,42 @@ const coDataAry = (ary) => {
     findLast(fn) {
       let newAry = ary.reverse()
       return newAry.findIndex((x) => fn(x))
+    },
+    slice(beginIndex = 0, lastIndex) {
+      const newAry = (i, ary) => {
+        let res = []
+        for (i; i < ary.length; i++) {
+          res.push(ary[i])
+        }
+        return res
+      }
+
+      const newArySlice = (i, end, ary) => {
+        let res = []
+        for (i; i <= end; i++) {
+          res.push(ary[i])
+        }
+        return res
+      }
+
+      if (
+        (beginIndex || beginIndex === 0) &&
+        lastIndex &&
+        Math.sign(lastIndex) !== -1
+      ) {
+        return newArySlice(beginIndex, lastIndex, ary)
+      }
+
+      if ((beginIndex || beginIndex === 0) && Math.sign(lastIndex) === -1) {
+        return newArySlice(beginIndex, ary.length + lastIndex, ary)
+      }
+
+      if (Math.sign(beginIndex) === -1 && lastIndex === undefined) {
+        return newAry(Math.abs(beginIndex), ary.reverse())
+      }
+      if (lastIndex === undefined) {
+        return newAry(beginIndex, ary)
+      }
     }
   }
 }
@@ -601,7 +637,8 @@ const coDataAry = (ary) => {
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
 let a = ary.flat()
 
-console.log(a.findLast((x) => x === 3))
+// console.log(a.slice(0, -6))
+// console.log(a.findLast((x) => x === 3))
 
 // a.values().next().next().next().next()
 // a.toString()
