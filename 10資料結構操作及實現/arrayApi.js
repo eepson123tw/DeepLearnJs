@@ -630,13 +630,30 @@ const coDataAry = (ary) => {
       if (lastIndex === undefined) {
         return newAry(beginIndex, ary)
       }
+    },
+    entries() {
+      let x = {
+        values: ['1', '2'],
+        *[Symbol.iterator]() {
+          yield* this.values
+        }
+      }
+      for (let i = 0; i < ary.length; i++) {
+        x['values'][i] = ary[i]
+      }
+
+      return x
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
 let a = ary.flat()
+let b = a.entries()
 
+for (let c of b) {
+  console.log(c)
+}
 // console.log(a.slice(0, -6))
 // console.log(a.findLast((x) => x === 3))
 
