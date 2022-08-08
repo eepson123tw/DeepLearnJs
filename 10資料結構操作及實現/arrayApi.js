@@ -641,19 +641,46 @@ const coDataAry = (ary) => {
       for (let i = 0; i < ary.length; i++) {
         x['values'][i] = ary[i]
       }
-
       return x
+    },
+    sort(fn) {
+      if (fn === undefined) {
+        for (let i = 0; i < ary.length; i++) {
+          for (let j = i + 1; j < ary.length; j++) {
+            if (ary[i] > ary[j]) {
+              ;[ary[i], ary[j]] = [ary[j], ary[i]]
+            }
+          }
+        }
+        console.log(ary)
+      } else {
+        for (let i = 0; i < ary.length - 1; i++) {
+          for (let j = i + 1; j < ary.length; j++) {
+            let res = fn.call(undefined, ary[i], ary[j])
+            if (res >= 1) {
+              ;[ary[i], ary[j]] = [ary[j], ary[i]]
+            }
+            if (res === 0) {
+              continue
+            }
+            if (isNaN(res)) {
+              continue
+            }
+          }
+        }
+        console.log(ary, 'fn')
+      }
     }
   }
 }
 
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
 let a = ary.flat()
-let b = a.entries()
 
-for (let c of b) {
-  console.log(c)
-}
+a.sort(function (a, b) {
+  // // return a - b
+  return b - a
+})
 // console.log(a.slice(0, -6))
 // console.log(a.findLast((x) => x === 3))
 
