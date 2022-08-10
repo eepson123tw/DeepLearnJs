@@ -54,7 +54,7 @@ array.splice(start[, deleteCount[, item1[, item2[, ...]]]])
 ---
 
 mutable
-*Array.prototype.sort() 刺激
+*Array.prototype.sort() 刺激 Done
 sort() 方法用原地算法对数组的元素进行排序，并返回数组。
 默认排序顺序是在将元素转换为字符串，然后比较它们的 UTF-16 代码单元值序列时构建的
 arr.sort([compareFunction])
@@ -73,7 +73,7 @@ expected output: true
 ---
 
 immutable
-*Array.prototype.slice()
+*Array.prototype.slice() Done
 arr.slice([begin[, end]])
 slice() 方法返回一个新的数组对象，这一对象是一个由 begin 和 end 决定的原数组的浅拷贝（包括 begin，不包括end）。
 原始数组不会被改变。
@@ -504,6 +504,13 @@ const coDataAry = (ary) => {
         }
       }
     },
+    lastIndexOf: (val) => {
+      let res
+      for (let i = ary.length - 1; i > 0; i--) {
+        ary[i] === val && (res = i)
+      }
+      return res
+    },
     concat: (...val) => {
       let newAry = [...ary, ...val]
       return coDataAry(newAry)
@@ -677,10 +684,12 @@ const coDataAry = (ary) => {
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
 let a = ary.flat()
 
-a.sort(function (a, b) {
-  // // return a - b
-  return b - a
-})
+a.lastIndexOf(1)
+
+// a.sort(function (a, b) {
+//   // // return a - b
+//   return b - a
+// })
 // console.log(a.slice(0, -6))
 // console.log(a.findLast((x) => x === 3))
 

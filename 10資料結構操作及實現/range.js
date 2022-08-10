@@ -1,50 +1,50 @@
-// {
-//   //若只有coData概念
-//   const coData = (s, e, fn) => {
-//     let start = s ? s : 0
-//     let end = e ? e : 0
-//     let func = fn ? fn : null
-//     return {
-//       range: function (a, b) {
-//         start = a - 1
-//         end = b
-//         return coData(start, end)
-//       },
-//       next: function () {
-//         if (start >= end) {
-//           return
-//         }
-//         start = Math.min(start, end)
-//         end = Math.max(start, end)
-//         start = ++start
-//         return coData(start, end)
-//       },
-//       map: function (num, fun) {
-//         func = fun
-//         return coData(start, end, func)
-//       },
-//       log: function () {
-//         console.log(start, end)
-//       },
-//       reverse: function (list) {
-//         return coData(end, start, func)
-//       },
-//       foreach: function (list, fun) {
-//         for (let i = start; i > end; i--) {
-//           list.next()
-//           fun(func(i))
-//         }
-//       }
-//     }
-//   }
-//   const co = coData()
-//   var numbers = co.range(1, 10)
-//   co.map(numbers, function (n) {
-//     return n * n
-//   })
-//   co.reverse(numbers).foreach(numbers, console.log)
-// }
-// /*
+{
+  //若只有coData概念
+  const coData = (s, e, fn) => {
+    let start = s ? s : 0
+    let end = e ? e : 0
+    let func = fn ? fn : null
+    return {
+      range: function (a, b) {
+        start = a - 1
+        end = b
+        return coData(start, end)
+      },
+      next: function () {
+        if (start >= end) {
+          return
+        }
+        start = Math.min(start, end)
+        end = Math.max(start, end)
+        start = ++start
+        return coData(start, end)
+      },
+      map: function (num, fun) {
+        func = fun
+        return coData(start, end, func)
+      },
+      log: function () {
+        console.log(start, end)
+      },
+      reverse: function (list) {
+        return coData(end, start, func)
+      },
+      foreach: function (list, fun) {
+        for (let i = start; i > end; i--) {
+          list.next()
+          fun(func(i))
+        }
+      }
+    }
+  }
+  const co = coData()
+  var numbers = co.range(1, 10)
+  co.map(numbers, function (n) {
+    return n * n
+  })
+  co.reverse(numbers).foreach(numbers, console.log)
+}
+/*
 // -----------
 //     co 是一個方法集合，裡面存有續傳的狀態跟回調
 //     沒有錯但不夠漂亮，同時失去了 Algebra effect
@@ -155,5 +155,5 @@
 
   let x = coDataRange(1, 10)
 
-  x.map((x) => x * 10)
+  // x.map((x) => x * 10)
 }

@@ -1,6 +1,6 @@
 ;(function (x) {
   const JQua = function (y) {
-    return JQua.fn.init(document.querySelector(y))
+    return new JQua.fn.init(document.querySelector(y))
   }
 
   JQua.fn = JQua.prototype = {
@@ -12,8 +12,12 @@
     }
   }
 
-  JQua.extend = function () {}
-  JQua.fn.extend = function () {}
+  JQua.extend = function () {
+    console.log(123)
+  }
+  JQua.fn.extend = function () {
+    console.log(123)
+  }
 
   JQua.fn.init.prototype = JQua.fn
 
@@ -22,6 +26,6 @@
   }
 })(window)
 
-console.log($('h1'))
-console.log($('h2'))
+// console.dir($('h1').extend())
+// console.log($('h2'))
 // console.dir($)
