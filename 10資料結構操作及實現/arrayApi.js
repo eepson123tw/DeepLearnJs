@@ -677,6 +677,18 @@ const coDataAry = (ary) => {
         }
         console.log(ary, 'fn')
       }
+    },
+    countFrequency() {
+      return (x = ary.reduce((arr, cur, i) => {
+        if (i === ary.length - 1) {
+          console.log(Object.values(arr))
+        }
+        if (typeof cur === 'object') {
+          return arr
+        }
+        arr[cur] = arr[cur] ? ++arr[cur] : 1
+        return arr
+      }, {}))
     }
   }
 }
@@ -684,7 +696,7 @@ const coDataAry = (ary) => {
 let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
 let a = ary.flat()
 
-a.lastIndexOf(1)
+console.log(a.countFrequency())
 
 // a.sort(function (a, b) {
 //   // // return a - b
