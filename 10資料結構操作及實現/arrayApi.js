@@ -689,14 +689,58 @@ const coDataAry = (ary) => {
         arr[cur] = arr[cur] ? ++arr[cur] : 1
         return arr
       }, {}))
+    },
+    group(condition) {
+      let x = ary.reduce((arr, cur) => {
+        let y = condition(cur)
+
+        if (Object.values(cur).includes(y) || Object.keys(cur).includes(y)) {
+          arr[y] = cur
+        } else {
+          arr[y] === undefined ? (arr[y] = [{ ...cur }]) : arr[y].push(cur)
+        }
+        return arr
+      }, {})
+      return x
     }
   }
 }
 
-let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
-let a = ary.flat()
+// const inventory = [
+//   { name: 'asparagus', type: 'vegetables', quantity: 5 },
+//   { name: 'bananas',  type: 'fruit', quantity: 0 },
+//   { name: 'goat', type: 'meat', quantity: 23 },
+//   { name: 'cherries', type: 'fruit', quantity: 5 },
+//   { name: 'fish', type: 'meat', quantity: 22 }
+// ];
+// => let result = inventory.group( ({ type }) => type );
+// {
+//   vegetables: [
+//     { name: 'asparagus', type: 'vegetables', quantity: 5 },
+//   ],
+//   fruit: [
+//     { name: "bananas", type: "fruit", quantity: 0 },
+//     { name: "cherries", type: "fruit", quantity: 5 }
+//   ],
+//   meat: [
+//     { name: "goat", type: "meat", quantity: 23 },
+//     { name: "fish", type: "meat", quantity: 22 }
+//   ]
+// }
 
-console.log(a.countFrequency())
+// let ary = coDataAry([1, [2, 2, 3, [1, 3, [6]]], { app: 123 }])
+// let a = ary.flat()
+
+let ary2 = coDataAry([
+  { name: 'asparagus', type: 'vegetables', quantity: 5 },
+  { name: 'bananas', type: 'fruit', quantity: 0 },
+  { name: 'goat', type: 'meat', quantity: 23 },
+  { name: 'cherries', type: 'fruit', quantity: 5 },
+  { name: 'fish', type: 'meat', quantity: 22 }
+])
+// ary2.group(({ name }) => name)
+
+ary2.group(({ quantity }) => (quantity > 5 ? 'ok' : 'restock'))
 
 // a.sort(function (a, b) {
 //   // // return a - b
