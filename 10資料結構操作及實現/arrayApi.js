@@ -702,6 +702,14 @@ const coDataAry = (ary) => {
         return arr
       }, {})
       return x
+    },
+    groupToMap(conditionMap) {
+      let x = ary.reduce((arr, cur) => {
+        let y = conditionMap(cur)
+        arr.set(y, cur)
+        return arr
+      }, new Map())
+      return x
     }
   }
 }
@@ -732,16 +740,21 @@ const coDataAry = (ary) => {
 // let a = ary.flat()
 
 let ary2 = coDataAry([
-  { name: 'asparagus', type: 'vegetables', quantity: 5 },
-  { name: 'bananas', type: 'fruit', quantity: 0 },
+  { name: 'asparagus', type: 'vegetables', quantity: 9 },
+  { name: 'bananas', type: 'fruit', quantity: 5 },
   { name: 'goat', type: 'meat', quantity: 23 },
-  { name: 'cherries', type: 'fruit', quantity: 5 },
+  { name: 'cherries', type: 'fruit', quantity: 12 },
   { name: 'fish', type: 'meat', quantity: 22 }
 ])
 // ary2.group(({ name }) => name)
-
-ary2.group(({ quantity }) => (quantity > 5 ? 'ok' : 'restock'))
-
+// ary2.group(({ quantity }) => (quantity > 5 ? 'ok' : 'restock'))
+const restock = { restock: true }
+const sufficient = { restock: false }
+let result = ary2.groupToMap(({ quantity }) =>
+  quantity < 6 ? restock : sufficient
+)
+restock['fast'] = true
+console.log(result.get(restock))
 // a.sort(function (a, b) {
 //   // // return a - b
 //   return b - a
