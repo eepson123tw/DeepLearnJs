@@ -6,12 +6,49 @@
 /* throttle_.throttle(function, wait, [options])
 Creates and returns a new, throttled version of the passed function, that, when invoked repeatedly, will only actually call the original function at most once per every wait milliseconds. Useful for rate-limiting events that occur faster than you can keep up with.
 
-By default, throttle will execute the function as soon as you call it for the first time, and, if you call it again any number of times during the wait period, as soon as that period is over. If you'd like to disable the leading-edge call, pass {leading: false}, and if you'd like to disable the execution on the trailing-edge, pass
+By default, throttle will execute the function as soon as you call it
+for the first time, and, if you call it again any number of times during the wait period, as soon as that period is over. 
+If you'd like to disable the leading-edge call, pass {leading: false},
+and if you'd like to disable the execution on the trailing-edge, pass
 {trailing: false}.
 
 var throttled = _.throttle(updatePosition, 100);
 $(window).scroll(throttled);
 If you need to cancel a scheduled throttle, you can call .cancel() on the throttled function.
+
+
+*/
+
+const throttleFn = (fn, wait = 0, options) => {
+  let cbNow = new Date().getTime()
+
+  return () => {
+    if (new Date().getTime() - cbNow > wait) {
+      fn()
+      cbNow = new Date().getTime()
+    }
+  }
+}
+
+// const a = throttleFn(() => {
+//   console.log('aap')
+// }, 1000)
+
+// setTimeout(() => {
+//   a()
+// }, 2000)
+
+// setTimeout(() => {
+//   a()
+// }, 2500)
+// setTimeout(() => {
+//   a()
+// }, 3000)
+/* 
+
+
+
+
 
 debounce_.debounce(function, wait, [immediate])
 Creates and returns a new debounced version of the passed function which will postpone its execution until after wait milliseconds have elapsed since the last time it was invoked. Useful for implementing behavior that should only happen after the input has stopped arriving. For example: rendering a preview of a Markdown comment, recalculating a layout after the window has stopped being resized, and so on.
