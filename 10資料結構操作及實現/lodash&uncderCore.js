@@ -39,7 +39,27 @@ const debounce = (fn, sec) => {
   return timeFn
 }
 
-let app = debounce(console.log(123), 1000)
+// let app = debounce(console.log(123), 1000)
+
+const x = () => {
+  let callTime = 0
+  return {
+    once(fn) {
+      // if (callTime >= 1) return console.log('once')
+      // return new Promise((resolve, reject) => resolve(fn))
+
+      return () => (++callTime === 1 ? fn() : console.log(1))
+    }
+  }
+}
+
+const createApplication = () => {
+  console.log(123)
+}
+
+var initialize = x().once(createApplication)
+initialize()
+initialize()
 
 /* 
 
@@ -60,7 +80,9 @@ $(window).resize(lazyLayout);
 If you need to cancel a scheduled debounce, you can call .cancel() on the debounced function.
 
 once_.once(function)
-Creates a version of the function that can only be called one time. Repeated calls to the modified function will have no effect, returning the value from the original call. Useful for initialization functions, instead of having to set a boolean flag and then check it later.
+Creates a version of the function that can only be called one time. Repeated calls to the modified function will have no effect, 
+returning the value from the original call. Useful for initialization functions, 
+instead of having to set a boolean flag and then check it later.
 
 var initialize = _.once(createApplication);
 initialize();
